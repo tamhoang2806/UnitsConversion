@@ -1,5 +1,6 @@
 package ca.bcit.comp2052.hoang4.unitsconversion;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import ca.bcit.comp2052.hoang.androidhelloworld.R;
 
-public class MainActivity extends Activity implements OnItemSelectedListener ,  View.OnClickListener{
+public class MainActivity extends Activity implements OnItemSelectedListener ,  View.OnClickListener
+{
 	protected List<String> mainSpinnerArr;
 	protected List<String> weightArr;
 	protected List<String> tempArr;
 	protected List<String> lengthArr;
 	protected Spinner mainSpinner, fromSpinner, toSpinner; 
+	
+//	protected int fromPosition, toPosition, mainPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,21 +43,12 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
         toSpinner = (Spinner) findViewById(R.id.spinner3);
         
         mainSpinner.setOnItemSelectedListener(this);
-        int mainPosition = mainSpinner.getSelectedItemPosition();
-        switch (mainPosition) {
-        case 0:
-        	this.generateSpinner(R.id.spinner2,weightArr);
-        	this.generateSpinner(R.id.spinner3,weightArr);
-            break;
-        case 1:
-        	this.generateSpinner(R.id.spinner2,tempArr);
-        	this.generateSpinner(R.id.spinner3,tempArr);
-            break;
-        case 2:
-        	this.generateSpinner(R.id.spinner2,lengthArr);
-        	this.generateSpinner(R.id.spinner3,lengthArr);
-            break;
-    	}
+        
+        //int fromPosition = fromSpinner.getSelectedItemPosition();
+        //int toPosition = toSpinner.getSelectedItemPosition();
+
+        //System.out.println(mainPosition + " " + toPosition + " " + fromPosition);
+        
         Button button = (Button)findViewById(R.id.button1);
 
         button.setOnClickListener(this);
@@ -61,23 +56,41 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
 //           @Override
 //           public void onClick(View arg0) {
 //              EditText edit = (EditText)findViewById(R.id.editText1);
-//              EditText edit2 = (EditText)findViewById(R.id.editText2);
 //
-//              TextView text = (TextView)findViewById(R.id.textView1);
+//              TextView text = (TextView)findViewById(R.id.textView3);
 //              String input = edit.getText().toString();
-//              String input2 = edit2.getText().toString();
+//              int mainPosition = mainSpinner.getSelectedItemPosition();
+//              int fromPosition = fromSpinner.getSelectedItemPosition();
+//              int toPosition = toSpinner.getSelectedItemPosition();
 //              
 //              double num = 0;
-//              double num2 = 0;
+//              double result = 0 ;
 //              try {
 //                 num = Double.parseDouble(input);
-//                 num2 = Double.parseDouble(input2);
+//                 if(fromPosition == toPosition)
+//          		{
+//          			result = num;
+//          		}
+// 	      	   else
+// 	      	   {
+// 	      		   if(mainPosition==0)
+// 	      		   {
+// 	      			   if(fromPosition == 0 && toPosition == 1)
+// 	      			   {
+// 	      				   result = this.lbtokg(num);
+// 	      			   }
+// 	      		   }
+// 	      			   
+// 	      	   }
 //              } catch (NumberFormatException e) {
 //                 input = "0";
-//                 input2 = "0";
 //              }
-//              double total = num + num2;
-//              text.setText(input + "+" + input2 + " = " + total);
+//              text.setText(input+ " "+fromPosition+" "+toPosition+" " + num+" "+result );
+//           }
+//           public double lbtokg(double input)
+//           {
+//           	double output = input / (double)2.2 ;
+//           	return output;
 //           }
 //        });
         
@@ -90,13 +103,13 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    public void generateSpinner(int spinner1,List<String> SpinnerArray)
+    public void generateSpinner(int spinnerid,List<String> SpinnerArray)
     {
     	//string adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, SpinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //get spinner
-        Spinner mainSpinner = (Spinner) findViewById(spinner1);
+        Spinner mainSpinner = (Spinner) findViewById(spinnerid);
         //add string adapter to the spinner
         mainSpinner.setAdapter(adapter);
     }
@@ -119,34 +132,119 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
     
     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
     	mainSpinner.setSelection(position);
-    	fromSpinner.setSelection(position);
-    	toSpinner.setSelection(position);
+    	//fromSpinner.setSelection(position);
+    	//toSpinner.setSelection(position);
+    	switch (position) {
+        case 0:
+        	this.generateSpinner(R.id.spinner2,weightArr);
+        	this.generateSpinner(R.id.spinner3,weightArr);
+            break;
+        case 1:
+        	this.generateSpinner(R.id.spinner2,tempArr);
+        	this.generateSpinner(R.id.spinner3,tempArr);
+            break;
+        case 2:
+        	this.generateSpinner(R.id.spinner2,lengthArr);
+        	this.generateSpinner(R.id.spinner3,lengthArr);
+            break;
+    	}
+    	System.out.println(position);
     }
 
     public void onNothingSelected(AdapterView<?> parentView) {
     }
-    public double lbtokg(double input)
-    {
-    	double output = input / (double)2.2;
-    	output = Math.round(output * 100.0) / 100.0;
-    	return output;
-    }
-
-
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		 EditText edit = (EditText)findViewById(R.id.editText1);
+    @Override
+    public void onClick(View arg0) {
+       EditText edit = (EditText)findViewById(R.id.editText1);
 
        TextView text = (TextView)findViewById(R.id.textView3);
        String input = edit.getText().toString();
+       int mainPosition = mainSpinner.getSelectedItemPosition();
+       int fromPosition = fromSpinner.getSelectedItemPosition();
+       int toPosition = toSpinner.getSelectedItemPosition();
        
        double num = 0;
+       double result = 0 ;
        try {
           num = Double.parseDouble(input);
+          if(fromPosition == toPosition)
+   		{
+   			result = num;
+   		}
+    	   else
+    	   {
+    		   if(mainPosition==0)
+    		   {
+    			   if(fromPosition == 0 && toPosition == 1)
+    			   {
+    				   result = this.lbtokg(num);
+    			   }
+    			   else
+    			   {
+    				   result = this.kgtolb(num);
+    			   }
+    		   }
+    		   else if(mainPosition == 1)
+    		   {
+    			   if(fromPosition == 0 && toPosition == 1)
+    			   {
+    				   result = this.ftoc(num);
+    			   }
+    			   else
+    			   {
+    				   result = this.ctof(num);
+    			   }
+    		   }
+    		   else
+    		   {
+    			   if(fromPosition == 0 && toPosition == 1)
+    			   {
+    				   result = this.milestokm(num);
+    			   }
+    			   else
+    			   {
+    				   result = this.kmtomiles(num);
+    			   }
+    		   }
+    			   
+    	   }
        } catch (NumberFormatException e) {
           input = "0";
        }
-       text.setText(input + " " + num);
-	}
+
+   		DecimalFormat df = new DecimalFormat("#.00");
+       text.setText(input+ "  "+fromPosition+" "+toPosition+" " + num+" "+df.format(result) );
+    }
+    public double lbtokg(double input)
+    {
+    	double output = input / (double)2.2 ;
+    	return output;
+    }
+    public double kgtolb(double input)
+    {
+    	double output = input * (double)2.2;
+    	return output;
+    }
+    public double ftoc(double input)
+    {
+    	double output = (input - 32)*5/9;
+    	return output;
+    }
+    public double ctof(double input)
+    {
+    	double output = input * 9 / 5 +32;
+    	return output;
+    }
+    public double kmtomiles(double input)
+    {
+    	double output = input/(double)1.609;
+    	return output;
+    
+    }
+    public double milestokm(double input)
+    {
+    	double output = input*(double)1.609;
+    	return output;
+    
+    }
 }
