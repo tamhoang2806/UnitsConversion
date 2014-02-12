@@ -24,12 +24,14 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
 	protected List<String> tempArr;
 	protected List<String> lengthArr;
 	protected Spinner mainSpinner, fromSpinner, toSpinner; 
+	public Converter conv;
 	
 //	protected int fromPosition, toPosition, mainPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        conv = new Converter();
         //initialize 
         this.initializeArrs();
         //create list of string
@@ -177,33 +179,33 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
     		   {
     			   if(fromPosition == 0 && toPosition == 1)
     			   {
-    				   result = this.lbtokg(num);
+    				   result = conv.lbtokg(num);
     			   }
     			   else
     			   {
-    				   result = this.kgtolb(num);
+    				   result = conv.kgtolb(num);
     			   }
     		   }
     		   else if(mainPosition == 1)
     		   {
     			   if(fromPosition == 0 && toPosition == 1)
     			   {
-    				   result = this.ftoc(num);
+    				   result = conv.ftoc(num);
     			   }
     			   else
     			   {
-    				   result = this.ctof(num);
+    				   result = conv.ctof(num);
     			   }
     		   }
     		   else
     		   {
     			   if(fromPosition == 0 && toPosition == 1)
     			   {
-    				   result = this.milestokm(num);
+    				   result = conv.milestokm(num);
     			   }
     			   else
     			   {
-    				   result = this.kmtomiles(num);
+    				   result = conv.kmtomiles(num);
     			   }
     		   }
     			   
@@ -214,37 +216,5 @@ public class MainActivity extends Activity implements OnItemSelectedListener ,  
 
    		DecimalFormat df = new DecimalFormat("#.00");
        text.setText(input+ "  "+fromPosition+" "+toPosition+" " + num+" "+df.format(result) );
-    }
-    public double lbtokg(double input)
-    {
-    	double output = input / (double)2.2 ;
-    	return output;
-    }
-    public double kgtolb(double input)
-    {
-    	double output = input * (double)2.2;
-    	return output;
-    }
-    public double ftoc(double input)
-    {
-    	double output = (input - 32)*5/9;
-    	return output;
-    }
-    public double ctof(double input)
-    {
-    	double output = input * 9 / 5 +32;
-    	return output;
-    }
-    public double kmtomiles(double input)
-    {
-    	double output = input/(double)1.609;
-    	return output;
-    
-    }
-    public double milestokm(double input)
-    {
-    	double output = input*(double)1.609;
-    	return output;
-    
     }
 }
